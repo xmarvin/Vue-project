@@ -31,10 +31,15 @@ export default {
   methods: {
         async selectSource(store, sourceName) {
             store.commit('setLoading', true);
-            await store.dispatch(`fetchPosts`);
-            const arrayOfPendingPosts = store.state.arrayOfPendingPosts.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
-            const arrayOfApprovedPosts = store.state.arrayOfApprovedPosts.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
-            const arrayOfRejectedPosts = store.state.arrayOfRejectedPosts.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
+            const url = 'http://localhost:8080/static/data.json';
+
+            const arrayOfPendingPostsAll = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
+            const arrayOfApprovedPostsAll = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
+            const arrayOfRejectedPostsAll = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
+
+            const arrayOfPendingPosts = arrayOfPendingPostsAll.media.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
+            const arrayOfApprovedPosts = arrayOfApprovedPostsAll.media.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
+            const arrayOfRejectedPosts = arrayOfRejectedPostsAll.media.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
             store.commit('setArrayOfPendingPosts', arrayOfPendingPosts);
             store.commit('setArrayOfApprovedPosts', arrayOfApprovedPosts);
             store.commit('setArrayOfRejectedPosts', arrayOfRejectedPosts);
@@ -77,5 +82,5 @@ export default {
   .list-block {
     background: #f8f8f8;
   }
-  
+
 </style>

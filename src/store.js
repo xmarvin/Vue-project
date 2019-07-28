@@ -83,14 +83,5 @@ export default new Vuex.Store({
   },
 
   actions: {
-    async fetchPosts({ commit }) {
-      const url = 'http://localhost:8080/static/data.json';
-      const arrayOfPendingPosts = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
-      const arrayOfApprovedPosts = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
-      const arrayOfRejectedPosts = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
-      commit(`setArrayOfPendingPosts`, arrayOfPendingPosts.media);
-      commit(`setArrayOfApprovedPosts`, arrayOfApprovedPosts.media);
-      commit(`setArrayOfRejectedPosts`, arrayOfRejectedPosts.media);
-    },
   }
 })
