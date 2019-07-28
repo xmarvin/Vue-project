@@ -29,25 +29,24 @@ export default {
     PostList
   },
   methods: {
-        async selectSource(store, sourceName) {
-            store.commit('setLoading', true);
-            const url = 'http://localhost:8080/static/data.json';
+          async loadData(url, sourceName,arrayName){
+          const postsAll = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
+          const posts = postsAll.media.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
 
-            const arrayOfPendingPostsAll = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
-            const arrayOfApprovedPostsAll = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
-            const arrayOfRejectedPostsAll = await fetch(`${url}`).then(response => response.json()).catch(() => commit('setLoading', true));
-
-            const arrayOfPendingPosts = arrayOfPendingPostsAll.media.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
-            const arrayOfApprovedPosts = arrayOfApprovedPostsAll.media.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
-            const arrayOfRejectedPosts = arrayOfRejectedPostsAll.media.filter(post => post.social_network.toLowerCase() == sourceName.toLowerCase());
-            store.commit('setArrayOfPendingPosts', arrayOfPendingPosts);
-            store.commit('setArrayOfApprovedPosts', arrayOfApprovedPosts);
-            store.commit('setArrayOfRejectedPosts', arrayOfRejectedPosts);
-            store.commit('setLoading', false);
-            const page = parseInt(this.$route.params.page || 1)
-            await store.commit(`setMediaSource`, sourceName);
-            store.commit('setCurrentPage', page);
+          this.$store.commit(arrayName, posts);
         },
+        async selectSource(store, sourceName) {
+   store.commit('setLoading', true);
+  const url = 'http://localhost:8080/static/data.json';
+ await  this.loadData(url,sourceName,'setArrayOfPendingPosts');
+ await   this.loadData(url,sourceName,'setArrayOfApprovedPosts');
+ await   this.loadData(url,sourceName,'setArrayOfRejectedPosts');
+
+  store.commit('setLoading', false);
+   const page = parseInt(this.$route.params.page || 1)
+    await store.commit('setMediaSource', sourceName);
+    store.commit('setCurrentPage', page);
+}
     },
         watch: {
     '$route' (to, from) {
