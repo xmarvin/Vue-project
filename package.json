@@ -7,10 +7,10 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js",
-    "postinstall": "npm install express"
+    "build": "node build/build.js"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "vue": "^2.5.2",
     "vuex": "^3.1.1"
   },
