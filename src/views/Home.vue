@@ -37,7 +37,7 @@ export default {
         },
         async selectSource(store, sourceName) {
    store.commit('setLoading', true);
-  const url = 'http://localhost:8080/static/data.json';
+  const url = '/static/data.json';
  await  this.loadData(url,sourceName,'setArrayOfPendingPosts');
  await   this.loadData(url,sourceName,'setArrayOfApprovedPosts');
  await   this.loadData(url,sourceName,'setArrayOfRejectedPosts');
